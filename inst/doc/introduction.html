@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Mark P.J. van der Loo" />
+  <title>Introduction to synthesizer</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style type="text/css">
+body {
+max-width: 50rem;
+margin-left: auto;
+margin-right: auto;
+font-family: system-ui;
+color: lightgray;
+background: #555555;
+}
+figure {
+margin: 0;
+padding: 0;
+}
+p, li {
+text-align: justify;
+}
+pre {
+background: #444;
+padding: 0.5rem;
+}
+h1, h2, h3, h4, h5 {
+color: orange;
+font-weight: bold;
+}
+h4, h5 {
+color: inherit;
+}
+h2 {
+margin-top: 3rem;
+}
+a {
+color: orange;
+}
+a:hover {
+color: lightblue;
+}
+pre code {
+color: white;
+background: inherit;
+padding: 0;
+}
+code {
+color: #e5c892;
+background: #444;
+padding: 0.2rem;
+}
+
+p.author {
+font-weight : bold;
+color: orange;
+}
+
+code {
+color : lightgray;
+}
+code span.op {
+color: #cccccc;
+}
+code span.kw, code span.cf {
+color: #30bd58;
+}
+code span.st {
+color: #76a9db; }
+code span.dv, code span.ot, code span.fl{
+color: #7fd0a8; }
+code span.dt, code span.er {
+color: #ee8c70; }
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Introduction to <code>synthesizer</code></h1>
+<p class="author">Mark P.J. van der Loo</p>
+</header>
+<!--
+%\VignetteEngine{simplermarkdown::mdweave_to_html}
+%\VignetteIndexEntry{Introduction to synthesizer}
+-->
+<p>Package version 0.2.0.</p>
+<p>Use <code>citation(&#39;synthesizer&#39;)</code> to cite the package.</p>
+<h2 id="introduction">Introduction</h2>
+<p><code>synthetiser</code> is an R package for quickly and easily synthesizing data. It also provides a few basic functions based on pMSE to measure some utility of the synthesized data.</p>
+<p>The package supports numerical, categorical/ordinal, and mixed data.</p>
+<p>At the moment the method used seems promising but we are working on investigating where the method shines and where it fails. So we have no guarantees yet on utility, privacy, and so on. Having said that, our preliminary results are promesing, and using the package is very easy.</p>
+<h2 id="installation">Installation</h2>
+<p>The latest CRAN release can be installed as follows.</p>
+<pre><code>install.packages(&quot;synthesizer&quot;)</code></pre>
+<p>Next, the package can be loaded. You can use <code>packageVersion</code> (from base R) to check which version you have installed.</p>
+<div class="sourceCode" id="load_package"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="load_package-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(synthesizer)</a>
+<a class="sourceLine" id="load_package-2" title="2"><span class="op">&gt;</span><span class="st"> </span><span class="co"># check the package version</span></a>
+<a class="sourceLine" id="load_package-3" title="3"><span class="er">&gt;</span><span class="st"> </span><span class="kw">packageVersion</span>(<span class="st">&quot;synthesizer&quot;</span>)</a>
+<a class="sourceLine" id="load_package-4" title="4">[<span class="dv">1</span>] ‘<span class="dv">0</span>.<span class="fl">2.0</span>’</a></code></pre></div>
+<h2 id="a-first-example">A first example</h2>
+<p>We will use the <code>iris</code> dataset, that is built into R.</p>
+<div class="sourceCode" id="load_chickweight"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="load_chickweight-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">data</span>(iris)</a>
+<a class="sourceLine" id="load_chickweight-2" title="2"><span class="op">&gt;</span><span class="st"> </span><span class="kw">head</span>(iris)</a>
+<a class="sourceLine" id="load_chickweight-3" title="3">  Sepal.Length Sepal.Width Petal.Length Petal.Width Species</a>
+<a class="sourceLine" id="load_chickweight-4" title="4"><span class="dv">1</span>          <span class="fl">5.1</span>         <span class="fl">3.5</span>          <span class="fl">1.4</span>         <span class="fl">0.2</span>  setosa</a>
+<a class="sourceLine" id="load_chickweight-5" title="5"><span class="dv">2</span>          <span class="fl">4.9</span>         <span class="fl">3.0</span>          <span class="fl">1.4</span>         <span class="fl">0.2</span>  setosa</a>
+<a class="sourceLine" id="load_chickweight-6" title="6"><span class="dv">3</span>          <span class="fl">4.7</span>         <span class="fl">3.2</span>          <span class="fl">1.3</span>         <span class="fl">0.2</span>  setosa</a>
+<a class="sourceLine" id="load_chickweight-7" title="7"><span class="dv">4</span>          <span class="fl">4.6</span>         <span class="fl">3.1</span>          <span class="fl">1.5</span>         <span class="fl">0.2</span>  setosa</a>
+<a class="sourceLine" id="load_chickweight-8" title="8"><span class="dv">5</span>          <span class="fl">5.0</span>         <span class="fl">3.6</span>          <span class="fl">1.4</span>         <span class="fl">0.2</span>  setosa</a>
+<a class="sourceLine" id="load_chickweight-9" title="9"><span class="dv">6</span>          <span class="fl">5.4</span>         <span class="fl">3.9</span>          <span class="fl">1.7</span>         <span class="fl">0.4</span>  setosa</a></code></pre></div>
+<p>Creating a synthetic version of this dataset is easy.</p>
+<div class="sourceCode" id="synthesize_iris"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="synthesize_iris-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">set.seed</span>(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="synthesize_iris-2" title="2"><span class="op">&gt;</span><span class="st"> </span>synth_iris &lt;-<span class="st"> </span><span class="kw">synthesize</span>(iris)</a></code></pre></div>
+<p>To compare the datasets we can make some side-by-side scatterplots.</p>
+<figure>
+<img src="data:image/png;base64,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" alt="Original and Synthesized Iris" id="plot" /><figcaption>Original and Synthesized Iris</figcaption>
+</figure>
+<p>Although the synthesized dataset shows more variance, it does mimic the clusture structure of the original dataset.</p>
+<p>By default, <code>synthesize</code> will return a dataset of the same size as the input dataset. However it is possible to ask for any number of records.</p>
+<div class="sourceCode" id="synthesize_more"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="synthesize_more-1" title="1"><span class="op">&gt;</span><span class="st"> </span>more_synth &lt;-<span class="st"> </span><span class="kw">synthesize</span>(iris, <span class="dt">n=</span><span class="dv">250</span>)</a>
+<a class="sourceLine" id="synthesize_more-2" title="2"><span class="op">&gt;</span><span class="st"> </span><span class="kw">dim</span>(more_synth)</a>
+<a class="sourceLine" id="synthesize_more-3" title="3">[<span class="dv">1</span>] <span class="dv">250</span>   <span class="dv">5</span></a></code></pre></div>
+<h2 id="checking-quality">Checking quality</h2>
+<p>The pMSE method is a popular way of measuring the quality of a dataset. The idea is to train a model to predict whether a record is synthetic or not. The mean squared error of prediction is the measure, so smaller is better.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">pmse</span>(<span class="dt">synth=</span>synth_iris, <span class="dt">real=</span>iris)</a>
+<a class="sourceLine" id="cb2-2" title="2">[<span class="dv">1</span>] <span class="fl">0.005406737</span></a></code></pre></div>
+<h2 id="how-it-works">How it works</h2>
+<p>Synthetic data is prepared as follows.</p>
+<p>Given an original dataset with <span class="math inline"><em>n</em></span> records:</p>
+<ol type="1">
+<li>For each numeric variable in the dataset, determine the emperical inverse cumulative density function (ECDF), and use linear interpolation to interpolate between the data points. The observed minimum and maximum are also the minimum and maximum of the synthetic univariate distribution. Sample <span class="math inline"><em>n</em></span> values using inverse transform sampling with the linear interpolated inverse ECDF</li>
+<li>For each categorical variable, sample <span class="math inline"><em>n</em></span> values with replacement.</li>
+<li>Reorder the synthetic dataset such that the rank order combinations of the synthetic data match those of the original dataset.</li>
+</ol>
+<p>If less than <span class="math inline"><em>m</em> &lt; <em>n</em></span> records are needed, sample <span class="math inline"><em>m</em></span> records uniformly from the dataset just created. If <span class="math inline"><em>m</em> &gt; <em>n</em></span> records are needed, create <span class="math inline">⌈<em>m</em>/<em>n</em>⌉</span> synthetic datasets of size <span class="math inline"><em>m</em></span> and sample uniformly <span class="math inline"><em>m</em></span> records from the combined data sets.</p>
+</body>
+</html>
