@@ -23,6 +23,9 @@ difference is computed.}
 \item{...}{Arguments passed to \code{mean}. e.g. use \code{trim=c(0.01,0.99)}
 for mean estimation that is less sensitive to outliers.}
 }
+\value{
+\code{[numeric]} scalar.
+}
 \description{
 For each numerical variable in the two datasets, compute the relative
 difference between the mean (standard deviation) of the real data and the

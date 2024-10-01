@@ -37,6 +37,24 @@ p <- sapply(1:100, function(i) mean(table(y)-table(R(100))) )
 
 expect_true(abs(mean(p)) <= 0.1)
 
+# test for logical
+y <- sample(c(TRUE, FALSE),100, replace=TRUE)
+R <- make_synthesizer(y)
+p <- sapply(1:100, function(i) mean(table(y)-table(R(100))) ) 
+expect_true(abs(mean(p))<= 0.1)
+
+# test that missing data is handled correctly
+expect_silent(make_synthesizer(c(1,NA,2,NA,NA)))
+expect_equal(synthesize(rep(NA_real_,3)),rep(NA_real_,3))
+expect_equal(synthesize(rep(NA,3)),rep(NA,3))
+
+# test correlation between NA and obserevd values
+rl <-data.frame( x = c(rnorm(50,mean=10), rnorm(50,mean=-10))
+               , y = c(rep(NA_real_,50), rnorm(50)))
+
+sn <- synthesize(rl)
+expect_true(mean(sn$x[is.na(sn$y)]) > mean(sn$x[!is.na(sn$y)]))
+
 
 # test for 'data.frame'
 

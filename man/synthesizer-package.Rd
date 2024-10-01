@@ -4,8 +4,19 @@
 \name{synthesizer-package}
 \alias{synthesizer}
 \alias{synthesizer-package}
-\title{synthesizer: Synthesize Data Based on Emperical Multivariate Distributions and Rank Order Matching}
+\title{synthesizer: Synthesize Data Based on Empirical Quantile Functions and Rank Order Matching}
 \description{
-Data is synthesized using a combination of inverse transform sampling from the emperical quantile functions for each variable, and then copying the rank order structure from the original dataset. The package also includes a number of functions to measure the utility of synthesized datasets.
+Data is synthesized using a combination of inverse transform sampling from the empirical quantile functions for each variable, and then copying the rank order structure from the original dataset. The package also includes a number of functions to measure the utility of synthesized datasets.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/markvanderloo/synthesizer}
+}
+
+}
+\author{
+\strong{Maintainer}: Mark van der Loo \email{mark.vanderloo@gmail.com} (\href{https://orcid.org/0000-0002-9807-4686}{ORCID})
+
 }
 \keyword{internal}

@@ -32,7 +32,11 @@ make_synthesizer <- function(y){
 #' @rdname make_synthesizer
 #' @export
 make_synthesizer.numeric <- function(y){
-  ys <- sort(y)
+  if (sum(!is.na(y))<2){
+    return(function(n) rep(NA_real_,n))
+  }
+
+  ys <- sort(y,na.last=FALSE)
   p  <- seq_along(y)/(length(y)+1)
   pmin <- min(p)
   pmax <- max(p)
@@ -47,6 +51,13 @@ make_synthesizer.numeric <- function(y){
 make_synthesizer.integer <- function(y){
   R <- make_synthesizer(as.double(y))
   function(n) as.integer( round(R(n)) )
+}
+
+
+#' @rdname make_synthesizer
+#' @export
+make_synthesizer.logical <- function(y){
+  function(n) sample(y, n, replace=TRUE)
 }
 
 
@@ -67,9 +78,13 @@ make_synthesizer.character <- function(y){
 #' @export
 make_synthesizer.data.frame <- function(y){
   L  <- lapply(y, make_synthesizer)
-  A  <- lapply(y, order)
+  A  <- lapply(y, order, na.last=FALSE)
   nr <- nrow(y)
-  f <- function() as.data.frame( mapply(function(f,i) sort(f(nr))[i], L, A, SIMPLIFY = FALSE) )
+  f <- function() as.data.frame(
+          mapply(
+            function(synth, ordr) sort(synth(nr), na.last = FALSE)[ordr]
+          , L, A, SIMPLIFY = FALSE
+          ) )
   function(n=nrow(y)){
     out <- f()
     if (n == nr) return(out)
@@ -79,7 +94,7 @@ make_synthesizer.data.frame <- function(y){
       out <- rbind(out, f())
       i <- i + 1
     }
-    out[sample(seq_len(nrow(out)), size=n, replace=FALSE),]
+    out[sample(seq_len(nrow(out)), size=n, replace=FALSE),,drop=FALSE]
   }
 }
 
@@ -90,6 +105,9 @@ make_synthesizer.data.frame <- function(y){
 #'
 #' @param y \code{[vector|data.frame]} data to synthesize.
 #' @param n \code{[integer]} Number of values or records to synthesize.
+#'
+#' @return A data object of the same type and structure as \code{y}.
+#'
 #'
 #' @examples
 #' synthesize(cars$speed,10)

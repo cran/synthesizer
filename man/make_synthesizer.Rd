@@ -4,6 +4,7 @@
 \alias{make_synthesizer}
 \alias{make_synthesizer.numeric}
 \alias{make_synthesizer.integer}
+\alias{make_synthesizer.logical}
 \alias{make_synthesizer.factor}
 \alias{make_synthesizer.character}
 \alias{make_synthesizer.data.frame}
@@ -14,6 +15,8 @@ make_synthesizer(y)
 \method{make_synthesizer}{numeric}(y)
 
 \method{make_synthesizer}{integer}(y)
+
+\method{make_synthesizer}{logical}(y)
 
 \method{make_synthesizer}{factor}(y)
 

@@ -17,6 +17,9 @@ are \code{"lr"}: logistic regression, and \code{"rf"}: random forest.}
 \item{nrep}{\code{[integer]} Number of model repetitions to average the 
 pMSE value over. Ignored for \code{lr}.}
 }
+\value{
+\code{[numeric]} scalar.
+}
 \description{
 The propensity mean squared error is defined as
 \eqn{\frac{1}{N}\sum_{i=1}^N(p_i-c)^2}, where \eqn{c} is the number of

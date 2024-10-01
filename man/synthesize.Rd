@@ -11,6 +11,9 @@ synthesize(y, n = NROW(y))
 
 \item{n}{\code{[integer]} Number of values or records to synthesize.}
 }
+\value{
+A data object of the same type and structure as \code{y}.
+}
 \description{
 Create \code{n} values or records based on the emperical (multivariate)
 distribution of \code{y}.
