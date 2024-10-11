@@ -1,13 +1,14 @@
-d66b5f152c894400fbb0126c21f5b48f *DESCRIPTION
+aac3400ac56ae243b24bdf63c29100cf *DESCRIPTION
 947baa0c4df0486d23bd2ba1c6b53be1 *NAMESPACE
-37e5a3102a2a86c1dfd25b44bb5be3c1 *NEWS
+ba867838312477f3b58e8f2d8687f04d *NEWS
 20b7fcdd2ea3b7ae554d3d6c27e5b8ae *R/measures.R
-34ad72f9d29730780796eaa46809926d *R/synthesizer.R
+6ede39f746729061200c6e7e6cb1c014 *R/synthesizer.R
 37522ee05c37c84e65f7a7ceb0de5820 *R/synthesizer_package.R
 2b576d6ce47b7d5982da862578324d10 *build/vignette.rds
-937c2180cdd7a373f440e926ad259499 *inst/doc/introduction.R
-2516119ac5ec3cb5b689900484ae876d *inst/doc/introduction.html
-8363b942e660c6915fa237bf50031d3d *inst/doc/introduction.md
+2db21afb2dd992449e59d47a88a3ed54 *inst/doc/introduction.R
+8ab028842694e1737de0e6a81d081655 *inst/doc/introduction.html
+4e364fecb3471684452cb6afdfe17215 *inst/doc/introduction.md
+04bfd70089d8bc938797c969539aaa09 *inst/tinytest/test_clustering.R
 4bb8b7a8091c0927586022152bb0f139 *inst/tinytest/test_measures.R
 f54b4c9afead7643d93e4ccdbd50ed6f *inst/tinytest/test_synthesizer.R
 4cfc46542051dc3b5f88a83dff05f133 *man/dcor.Rd
@@ -18,5 +19,5 @@ e10c5479b08d24cf9ed03a7d39bec5a9 *man/qa.Rd
 72461a742b4ae0763752f708ebd27a17 *man/synthesize.Rd
 3658b52b83efe0355d3cc0883c157df7 *man/synthesizer-package.Rd
 0b9ba4d201dd55167fcc4a0c863e61d3 *tests/tinytest.R
-8363b942e660c6915fa237bf50031d3d *vignettes/introduction.md
+4e364fecb3471684452cb6afdfe17215 *vignettes/introduction.md
 ae1ef163cae78a55349f45194b079bbc *vignettes/style.css

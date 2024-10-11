@@ -23,6 +23,6 @@ par(oldpar)
 more_synth <- synthesize(iris, n=250)
 dim(more_synth)
 
-# <unlabeled code block>
+# pMSE
 pmse(synth=synth_iris, real=iris)
 

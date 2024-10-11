@@ -2,7 +2,7 @@ Package: synthesizer
 Type: Package
 Title: Synthesize Data Based on Empirical Quantile Functions and Rank
         Order Matching
-Version: 0.3.0
+Version: 0.3.1
 Authors@R: c( person("Mark", "van der Loo", role=c("aut","cre")
              , email="mark.vanderloo@gmail.com"
              , comment= c(ORCID="0000-0002-9807-4686")))
@@ -21,7 +21,7 @@ Suggests: tinytest, simplermarkdown
 Encoding: UTF-8
 RoxygenNote: 7.3.1
 NeedsCompilation: no
-Packaged: 2024-10-01 08:35:48 UTC; mark
+Packaged: 2024-10-11 13:03:23 UTC; mark
 Author: Mark van der Loo [aut, cre] (<https://orcid.org/0000-0002-9807-4686>)
 Repository: CRAN
-Date/Publication: 2024-10-01 13:20:02 UTC
+Date/Publication: 2024-10-11 14:50:02 UTC
