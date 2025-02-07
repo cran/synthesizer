@@ -31,10 +31,4 @@ scars <- synthesize(cars)
 pmse(scars, cars)
 
 }
-\seealso{
-Other measures: 
-\code{\link{dcor}()},
-\code{\link{dmean}()},
-\code{\link{qa}()}
-}
 \concept{measures}

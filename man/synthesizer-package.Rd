@@ -6,7 +6,7 @@
 \alias{synthesizer-package}
 \title{synthesizer: Synthesize Data Based on Empirical Quantile Functions and Rank Order Matching}
 \description{
-Data is synthesized using a combination of inverse transform sampling from the empirical quantile functions for each variable, and then copying the rank order structure from the original dataset. The package also includes a number of functions to measure the utility of synthesized datasets.
+Data is synthesized using a combination of inverse transform sampling using the empirical quantile functions for each variable, and then copying the rank order structure from the original dataset. The syntesizer method has a tunable parameter allowing to gradually move from realistic and possibly unsafe synthetic data to decorrelated data of less utility.
 }
 \seealso{
 Useful links:

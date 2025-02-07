@@ -7,25 +7,35 @@
 \alias{make_synthesizer.logical}
 \alias{make_synthesizer.factor}
 \alias{make_synthesizer.character}
+\alias{make_synthesizer.ts}
 \alias{make_synthesizer.data.frame}
 \title{Create a function that generates synthetic data}
 \usage{
-make_synthesizer(y)
+make_synthesizer(x, ...)
 
-\method{make_synthesizer}{numeric}(y)
+\method{make_synthesizer}{numeric}(x, ...)
 
-\method{make_synthesizer}{integer}(y)
+\method{make_synthesizer}{integer}(x, ...)
 
-\method{make_synthesizer}{logical}(y)
+\method{make_synthesizer}{logical}(x, ...)
 
-\method{make_synthesizer}{factor}(y)
+\method{make_synthesizer}{factor}(x, ...)
 
-\method{make_synthesizer}{character}(y)
+\method{make_synthesizer}{character}(x, ...)
 
-\method{make_synthesizer}{data.frame}(y)
+\method{make_synthesizer}{ts}(x, ...)
+
+\method{make_synthesizer}{data.frame}(x, rankcor = 1, ...)
 }
 \arguments{
-\item{y}{\code{[vector|data.frame]} Template data to be synthesized.}
+\item{x}{\code{[vector|data.frame]} Template data to be synthesized.}
+
+\item{...}{arguments passed to other methods}
+
+\item{rankcor}{\code{[numeric]} in \eqn{(0,1]} The correlations between the ranks of
+the real data and synthetic data. Either a single
+number or a vector of the form \code{c("variable1"=x1,...)}. Only used
+if \code{x} is a data frame.}
 }
 \value{
 A \code{function} accepting a single integer argument: the number
@@ -34,7 +44,7 @@ A \code{function} accepting a single integer argument: the number
 \description{
 Create a function that accepts a non-negative integer \code{n}, and
 that returns synthetic data sampled from the emperical (multivariate)
-distribution of \code{y}.
+distribution of \code{x}.
 }
 \examples{
 synth <- make_synthesizer(cars$speed)
