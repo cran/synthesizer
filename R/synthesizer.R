@@ -10,7 +10,9 @@
 #' @param ... arguments passed to other methods
 #'
 #' @return A \code{function} accepting a single integer argument: the number
-#'         of synthesized values or records to return.
+#'         of synthesized values or records to return.  For objects of class
+#'         \code{ts} \code{n} must be equal to the length of the original data
+#'         (this is set as the default).
 #'
 #'
 #' @examples
@@ -30,10 +32,12 @@ make_synthesizer <- function(x,...){
 }
 
 #' @rdname make_synthesizer
+#' @param na.rm \code{[logical]} Remove missing values before creating a synthesizer
 #' @export
-make_synthesizer.numeric <- function(x,...){
+make_synthesizer.numeric <- function(x,na.rm=FALSE,...){
+  if (isTRUE(na.rm)) x <- x[!is.na(x)]
   if (sum(!is.na(x))<2){
-    return(function(n) rep(NA_real_,n))
+    return(function(n,...) rep(NA_real_,n))
   }
 
   ys <- sort(x,na.last=FALSE)
@@ -41,36 +45,40 @@ make_synthesizer.numeric <- function(x,...){
   pmin <- min(p)
   pmax <- max(p)
   Qn <- stats::approxfun(x=p, y=ys)
-  function(n){
+  function(n,...){
     Qn(stats::runif(n, min = pmin, max = pmax))      
   }
 }
 
 #' @rdname make_synthesizer
 #' @export
-make_synthesizer.integer <- function(x,...){
+make_synthesizer.integer <- function(x,na.rm=FALSE,...){
+  if (isTRUE(na.rm)) x <- x[!is.na(x)]
   R <- make_synthesizer(as.double(x))
-  function(n) as.integer( round(R(n)) )
+  function(n,...) as.integer( round(R(n)) )
 }
 
 
 #' @rdname make_synthesizer
 #' @export
-make_synthesizer.logical <- function(x,...){
-  function(n) sample(x, n, replace=TRUE)
+make_synthesizer.logical <- function(x,na.rm=FALSE,...){
+  if (isTRUE(na.rm)) x <- x[!is.na(x)]
+  function(n,...) sample(x, n, replace=TRUE)
 }
 
 
 #' @rdname make_synthesizer
 #' @export
-make_synthesizer.factor <- function(x,...){
-  function(n) sample(x, n, replace=TRUE)
+make_synthesizer.factor <- function(x,na.rm=FALSE,...){
+  if (isTRUE(na.rm)) x <- x[!is.na(x)]
+  function(n,...) sample(x, n, replace=TRUE)
 }
 
 #' @rdname make_synthesizer
 #' @export
-make_synthesizer.character <- function(x,...){
-  function(n) sample(x, n, replace=TRUE)
+make_synthesizer.character <- function(x,na.rm=FALSE,...){
+  if (isTRUE(na.rm)) x <- x[!is.na(x)]
+  function(n,...) sample(x, n, replace=TRUE)
 }
 
 #' @rdname make_synthesizer
@@ -80,7 +88,7 @@ make_synthesizer.ts <- function(x,...){
   x_start <- start(x)
   x_end   <- end(x)
   x_freq  <- frequency(x)
-  function(n=x_len){
+  function(n=x_len,...){
     if (!identical(n,x_len)){
      err1 <- sprintf("Requested output lenght is %d, while input length is %d",x_len,n)
      err2 <- "Synthetic 'ts' objects must be of the same length as the input."
@@ -92,87 +100,96 @@ make_synthesizer.ts <- function(x,...){
   }
 }
 
-# Randomly swap adjacent elements of x. 
-# Each element has a probability of pswap to be part of a swap.
-randomize <- function(x, rho){
-  # if desired correlation equals zero (or close enough) we don't use
-  # any rank-matching at al and leave the initially sampled variable
-  # intact.
-  if (rho < 0.05) return(sample(x))
-
-  n          <- length(x)
-  # theory suggests using a block size of n*(1-rho); We choose a smaller block size
-  # to spread permutations accross the vector (at the cost of some extra iterations)
+decor <- function(r, rho){
+  stopifnot(rho>0)
+  if (rho==1) return(r)
+  
+  n <- length(r)
   block_size <- max(n*(1-rho)/2,4)
   k          <- round(block_size/2)
  
-  old_x <- x
-  while(cor(old_x,x) > rho){
+  old_r <- r
+  while(cor(old_r,r) > rho){
     i  <- sample(seq(k,n-k),size=1)
     ii <- seq(i-k, i+k)
-    x[ii] <- x[sample(ii)]
+    r[ii] <- r[sample(ii)]
   }
-  x
+  r
 }
 
 
+make_decorrelating_synthesizer <- function(x, na.rm){
+  f <- make_synthesizer(x, na.rm=na.rm)
 
+  r <- rank(x, ties.method="first")
+  m <- length(x)  
 
-# randomize the order of a rank vector until the correlation with the original
-# vecor has dropped below a maximum value.  Orders are randomized by selecting
-# each time at random approximately 1% of the vector and cyclicly permuting the
-# indices. 
-decorrelate <- function(ranklist, cors){
-  # case of perfect utility matching: no randomization necessary
-  if ( (length(cors)==1 && cors==1) || 
-       (length(cors)==length(ranklist) && all(cors==1)) ){
-    return(ranklist)
+  function(n=m, rho=1, ii=NULL){
+    stopifnot(is.numeric(rho),rho >=0, rho <= 1)
+    
+    if ( rho == 0 ) return(f(n))
+   
+    if ( n == m ) return(sort(f(n))[decor(r,rho)])
+
+    stopifnot(!is.null(ii), length(ii)==n)
+
+    if ( n < m ) return(sort(f(m))[decor(r,rho)][ii])
+
+    if ( n > m ){
+      do.call("c", lapply(seq_len(ceiling(n/m)), function(i) f(m)) )[ii]
+    }
   }
 
-  if ( length(cors) == 1 && is.null(names(cors)) ){
-    cors <- rep(cors,length(ranklist))
-    names(cors) <- names(ranklist)
-  }
+}
 
-  for ( variable in names(cors) ){
-    ranklist[[variable]] <- randomize(ranklist[[variable]], cors[variable])
-  }
+# some logic to expand versions of the rankcor variable.
+# Output: a named vector, where 'varnames' are the names of the variables in the data
+get_rcors <- function(varnames, rankcor){
+  p          <- length(varnames)
+  out        <- rep(1,p)
+  names(out) <- varnames
 
-  ranklist
+  if ( length(rankcor)==1 & is.null(names(rankcor)) ){ 
+    out[1:p] <- rankcor
+  } else {
+    if (!all(names(rankcor) %in% varnames)){
+      wrong_names <- names(rankcor)[!names(rankcor) %in% varnames]
+      msg <- sprintf("Mismatch in specification of 'rankcor'. Variables not occurring in the data:\n%s"
+                    , paste(wrong_names, collapse=", "))
+      stop(msg)
+    }
+    out[ names(rankcor) ] <- rankcor
+  }
+  
+  out
 }
 
 
 #' @rdname make_synthesizer
-#' @param rankcor \code{[numeric]} in \eqn{(0,1]} The correlations between the ranks of
-#'        the real data and synthetic data. Either a single
-#'        number or a vector of the form \code{c("variable1"=x1,...)}. Only used
-#'        if \code{x} is a data frame. 
 #'
 #' @export
-make_synthesizer.data.frame <- function(x, rankcor=1,...){
-  stopifnot(all(rankcor >= 0), all(rankcor<=1))
-
-  L  <- lapply(x, make_synthesizer)
-  A  <- lapply(x, rank, na.last=FALSE)
-  A  <- decorrelate(A, rankcor)
-  nr <- nrow(x)
-  f  <- function() as.data.frame(
-          mapply(
-            function(synth, rnk) sort(synth(nr), na.last = FALSE)[rnk]
-          , L, A, SIMPLIFY = FALSE
-         ) )
-  function(n=nrow(x)){
-    out <- f()
-    if (n == nr) return(out)
-    if (n < nr)  return( out[sample(seq_len(nr), size=n, replace=FALSE),,drop=FALSE] )
-    i <- 0
-    while ( i < n %/% nr ){
-      out <- rbind(out, f())
-      i <- i + 1
+make_synthesizer.data.frame <- function(x,na.rm=FALSE,...){
+  
+  L <- lapply(x, make_decorrelating_synthesizer,na.rm=na.rm)
+  m <- NROW(x)
+  varnames <- names(x)
+  function(n, rankcor=1,...){
+    rcors <- get_rcors(varnames, rankcor)
+    ii <- if ( n == m ){
+      NULL
+    } else if ( n < m ){
+      sample(m, size=n, replace=FALSE)
+    } else {
+      sample(ceiling(n/m)*m, size=n, replace=FALSE)
     }
-    out[sample(seq_len(nrow(out)), size=n, replace=FALSE),,drop=FALSE]
+    lst <- mapply(function(f, rho) f(n, rho,ii), L, rcors, SIMPLIFY=FALSE)
+    do.call("data.frame",lst)
   }
+
 }
+
+
+
 
 #' Create synthetic version of a dataset
 #'
@@ -182,10 +199,13 @@ make_synthesizer.data.frame <- function(x, rankcor=1,...){
 #'
 #' @param x \code{[vector|data.frame]} data to synthesize.
 #' @param n \code{[integer]} Number of values or records to synthesize.
+#' @param na.rm \code{[logical]} Remove missing values before creating a synthesizer.
+#'        Set to \code{TRUE} to avoid synthesizing missing values.      
 #' @param rankcor \code{[numeric]} in \eqn{[0,1]}. Either a single rank correlation
 #'        value that is applied to all variables, or a vector of the form
 #'        \code{c(variable1=ut1lity1,...)}. Variables not explicitly mentioned
-#'        will have \code{rankcor=1}. See also the note below.
+#'        will have \code{rankcor=1}. See also the note below. Ignored for 
+#'        all types of \code{x}, except for objects of class \code{data.frame}.
 #'
 #'
 #' @note
@@ -216,9 +236,11 @@ make_synthesizer.data.frame <- function(x, rankcor=1,...){
 #' plot(Sepal.Length ~ Sepal.Width, data=s3, col=s3$Species, main="Low utility Species")
 #' par(oldpar)
 #'
+#'
 #' @family synthesis
 #' @export
-synthesize <- function(x, n=NROW(x), rankcor=1) make_synthesizer(x,rankcor)(n) 
+synthesize <- function(x, na.rm=FALSE, n=NROW(x), rankcor=1) make_synthesizer(x,na.rm=na.rm)(n,rankcor)
+
 
 
 

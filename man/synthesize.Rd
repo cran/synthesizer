@@ -4,17 +4,21 @@
 \alias{synthesize}
 \title{Create synthetic version of a dataset}
 \usage{
-synthesize(x, n = NROW(x), rankcor = 1)
+synthesize(x, na.rm = FALSE, n = NROW(x), rankcor = 1)
 }
 \arguments{
 \item{x}{\code{[vector|data.frame]} data to synthesize.}
+
+\item{na.rm}{\code{[logical]} Remove missing values before creating a synthesizer.
+Set to \code{TRUE} to avoid synthesizing missing values.}
 
 \item{n}{\code{[integer]} Number of values or records to synthesize.}
 
 \item{rankcor}{\code{[numeric]} in \eqn{[0,1]}. Either a single rank correlation
 value that is applied to all variables, or a vector of the form
 \code{c(variable1=ut1lity1,...)}. Variables not explicitly mentioned
-will have \code{rankcor=1}. See also the note below.}
+will have \code{rankcor=1}. See also the note below. Ignored for 
+all types of \code{x}, except for objects of class \code{data.frame}.}
 }
 \value{
 A data object of the same type and structure as \code{x}.
@@ -48,6 +52,7 @@ plot(Sepal.Length ~ Sepal.Width, data=s1, col=s1$Species, main="Synthetic Iris")
 plot(Sepal.Length ~ Sepal.Width, data=s2, col=s2$Species, main="Low utility Iris")
 plot(Sepal.Length ~ Sepal.Width, data=s3, col=s3$Species, main="Low utility Species")
 par(oldpar)
+
 
 }
 \seealso{

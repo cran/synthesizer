@@ -13,33 +13,32 @@
 \usage{
 make_synthesizer(x, ...)
 
-\method{make_synthesizer}{numeric}(x, ...)
+\method{make_synthesizer}{numeric}(x, na.rm = FALSE, ...)
 
-\method{make_synthesizer}{integer}(x, ...)
+\method{make_synthesizer}{integer}(x, na.rm = FALSE, ...)
 
-\method{make_synthesizer}{logical}(x, ...)
+\method{make_synthesizer}{logical}(x, na.rm = FALSE, ...)
 
-\method{make_synthesizer}{factor}(x, ...)
+\method{make_synthesizer}{factor}(x, na.rm = FALSE, ...)
 
-\method{make_synthesizer}{character}(x, ...)
+\method{make_synthesizer}{character}(x, na.rm = FALSE, ...)
 
 \method{make_synthesizer}{ts}(x, ...)
 
-\method{make_synthesizer}{data.frame}(x, rankcor = 1, ...)
+\method{make_synthesizer}{data.frame}(x, na.rm = FALSE, ...)
 }
 \arguments{
 \item{x}{\code{[vector|data.frame]} Template data to be synthesized.}
 
 \item{...}{arguments passed to other methods}
 
-\item{rankcor}{\code{[numeric]} in \eqn{(0,1]} The correlations between the ranks of
-the real data and synthetic data. Either a single
-number or a vector of the form \code{c("variable1"=x1,...)}. Only used
-if \code{x} is a data frame.}
+\item{na.rm}{\code{[logical]} Remove missing values before creating a synthesizer}
 }
 \value{
 A \code{function} accepting a single integer argument: the number
-        of synthesized values or records to return.
+        of synthesized values or records to return.  For objects of class
+        \code{ts} \code{n} must be equal to the length of the original data
+        (this is set as the default).
 }
 \description{
 Create a function that accepts a non-negative integer \code{n}, and

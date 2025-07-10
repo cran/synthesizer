@@ -4,9 +4,9 @@
 \name{synthesizer-package}
 \alias{synthesizer}
 \alias{synthesizer-package}
-\title{synthesizer: Synthesize Data Based on Empirical Quantile Functions and Rank Order Matching}
+\title{synthesizer: Fast, Robust, and High-Quality Synthetic Data Generation with a Tuneable Privacy-Utility Trade-Off}
 \description{
-Data is synthesized using a combination of inverse transform sampling using the empirical quantile functions for each variable, and then copying the rank order structure from the original dataset. The syntesizer method has a tunable parameter allowing to gradually move from realistic and possibly unsafe synthetic data to decorrelated data of less utility.
+Synthesize numeric, categorical, mixed and time series data. Data circumstances including mixed (or zero-inflated) distributions and missing data patterns are reproduced in the synthetic data. A single parameter allows balancing between high-quality synthetic data that represents correlations of the original data and lower quality but more privacy safe synthetic data without correlations. Tuning can be done per variable or for the whole dataset.
 }
 \seealso{
 Useful links:

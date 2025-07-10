@@ -23,12 +23,6 @@ par(oldpar)
 more_synth <- synthesize(iris, n=250)
 dim(more_synth)
 
-# pMSE
-pmse(synth=synth_iris, real=iris)
-
-# pMSE
-pmse(synth=synth_iris, real=iris, model="rf")
-
 # decorrelate
 # decorrelate rank matching to 0.5
 s1 <- synthesize(iris, rankcor=0.5)
