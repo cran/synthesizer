@@ -41,7 +41,9 @@ make_synthesizer.numeric <- function(x,na.rm=FALSE,...){
   }
 
   ys <- sort(x,na.last=FALSE)
-  p  <- seq_along(x)/(length(x)+1)
+
+  p <- (2*seq_along(x)-1)/(2*length(x))
+
   pmin <- min(p)
   pmax <- max(p)
   Qn <- stats::approxfun(x=p, y=ys)
